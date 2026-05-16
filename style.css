@@ -80,7 +80,7 @@ a:hover { color: var(--accent-hover); }
 
 .logo:hover { color: var(--text); }
 
-.logo-icon { color: var(--accent); }
+.logo-icon { width: 36px; height: 36px; flex-shrink: 0; }
 
 .nav-links {
   display: flex;
@@ -549,7 +549,7 @@ a:hover { color: var(--accent-hover); }
   color: var(--text);
 }
 
-.footer-logo-icon { color: var(--accent); }
+.footer-logo-icon { width: 28px; height: 28px; }
 
 .footer-tagline {
   font-size: 0.85rem;
