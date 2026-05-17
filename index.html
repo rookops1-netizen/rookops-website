@@ -239,11 +239,7 @@
         <h2 class="section-title">Ready to find out?</h2>
         <p class="section-subtitle">Give us 20 minutes. Our AI agent will have a natural conversation with you about your business and deliver a custom AI roadmap — free, no pressure, no human sales pitch.</p>
       </div>
-      <form class="contact-form" action="https://formsubmit.co/rookops1@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="New RookOps Discovery Call Lead!">
-        <input type="hidden" name="_honey" style="display:none">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://rookops.io">
+      <form class="contact-form" id="contactForm">
         <div class="form-row">
           <input type="text" name="name" placeholder="Your Name" required>
           <input type="text" name="business" placeholder="Business Name" required>
@@ -253,7 +249,8 @@
           <input type="tel" name="phone" placeholder="Phone Number">
         </div>
         <textarea name="message" placeholder="What's eating your time? What do you wish you didn't have to do yourself? Tell us about it." rows="4"></textarea>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Take My Free AI Discovery Call</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" id="submitBtn">Take My Free AI Discovery Call</button>
+        <p id="formMsg" style="display:none; margin-top:1rem; text-align:center;"></p>
       </form>
     </div>
   </section>
@@ -328,8 +325,51 @@
     }, { threshold: 0.1 });
     revealElements.forEach(el => observer.observe(el));
 
-    // Form handler — Netlify handles the submission natively
-    // The form will redirect to a thank-you page on success
+    // Form handler — sends to Netlify function which forwards to email
+    document.querySelector('#contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('formMsg');
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+      
+      try {
+        const response = await fetch('/.netlify/functions/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        
+        if (response.ok) {
+          btn.textContent = '✓ Discovery Booked!';
+          btn.style.background = '#16a34a';
+          msg.textContent = 'We\'ll be in touch within 24 hours.';
+          msg.style.color = '#16a34a';
+          msg.style.display = 'block';
+          this.reset();
+        } else {
+          throw new Error('Submission failed');
+        }
+      } catch (err) {
+        btn.textContent = 'Something went wrong. Try again.';
+        btn.style.background = '#dc2626';
+        msg.textContent = 'You can also email us directly at rookops1@gmail.com';
+        msg.style.color = '#dc2626';
+        msg.style.display = 'block';
+      }
+      
+      setTimeout(() => {
+        btn.textContent = 'Take My Free AI Discovery Call';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.background = '';
+        msg.style.display = 'none';
+      }, 5000);
+    });
 
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
