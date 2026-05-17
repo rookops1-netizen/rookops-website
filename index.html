@@ -239,16 +239,20 @@
         <h2 class="section-title">Ready to find out?</h2>
         <p class="section-subtitle">Give us 20 minutes. Our AI agent will have a natural conversation with you about your business and deliver a custom AI roadmap — free, no pressure, no human sales pitch.</p>
       </div>
-      <form class="contact-form" onsubmit="handleSubmit(event)">
+      <form class="contact-form" action="https://formsubmit.co/rookops1@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="New RookOps Discovery Call Lead!">
+        <input type="hidden" name="_honey" style="display:none">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="https://rookops.io">
         <div class="form-row">
-          <input type="text" placeholder="Your Name" required>
-          <input type="text" placeholder="Business Name" required>
+          <input type="text" name="name" placeholder="Your Name" required>
+          <input type="text" name="business" placeholder="Business Name" required>
         </div>
         <div class="form-row">
-          <input type="email" placeholder="Email Address" required>
-          <input type="tel" placeholder="Phone Number">
+          <input type="email" name="email" placeholder="Email Address" required>
+          <input type="tel" name="phone" placeholder="Phone Number">
         </div>
-        <textarea placeholder="What's eating your time? What do you wish you didn't have to do yourself? Tell us about it." rows="4"></textarea>
+        <textarea name="message" placeholder="What's eating your time? What do you wish you didn't have to do yourself? Tell us about it." rows="4"></textarea>
         <button type="submit" class="btn btn-primary btn-lg btn-block">Take My Free AI Discovery Call</button>
       </form>
     </div>
@@ -324,20 +328,8 @@
     }, { threshold: 0.1 });
     revealElements.forEach(el => observer.observe(el));
 
-    // Form handler
-    function handleSubmit(e) {
-      e.preventDefault();
-      const btn = e.target.querySelector('button[type="submit"]');
-      btn.textContent = '✓ Discovery Booked!';
-      btn.disabled = true;
-      btn.style.background = '#16a34a';
-      setTimeout(() => {
-        btn.textContent = 'Take My Free AI Discovery Call';
-        btn.disabled = false;
-        btn.style.background = '';
-        e.target.reset();
-      }, 3000);
-    }
+    // Form handler — Netlify handles the submission natively
+    // The form will redirect to a thank-you page on success
 
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
