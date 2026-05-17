@@ -100,5 +100,3 @@ export default async (event) => {
     };
   }
 };
-
-export const config = { path: '/api/contact' };
